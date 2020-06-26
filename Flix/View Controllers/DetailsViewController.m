@@ -8,6 +8,7 @@
 
 #import "DetailsViewController.h"
 #import "UIImageView+AFNetworking.h"
+#import <QuartzCore/QuartzCore.h>
 
 @interface DetailsViewController ()
 
@@ -28,6 +29,11 @@
     NSString *posterURLString = self.movie[@"poster_path"];
     NSString *fullPosterURLString = [baseURLString stringByAppendingString:posterURLString];
     NSURL *posterURL = [NSURL URLWithString:fullPosterURLString];
+    
+    self.posterView.layer.borderWidth = 2.0f;
+    
+    self.posterView.layer.borderColor = [[UIColor whiteColor] CGColor];
+    
     [self.posterView setImageWithURL:posterURL];
     
     NSString *backdropURLString = self.movie[@"backdrop_path"];
@@ -39,6 +45,7 @@
     self.synopsisLabel.text = self.movie[@"overview"];
     
     [self.titleLabel sizeToFit];
+ 
     [self.synopsisLabel sizeToFit];
    
 }
