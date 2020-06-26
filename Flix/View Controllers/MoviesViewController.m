@@ -9,6 +9,7 @@
 #import "MoviesViewController.h"
 #import "MovieCell.h"
 #import "UIImageView+AFNetworking.h"
+#import "DetailsViewController.h"
 
 @interface MoviesViewController () <UITableViewDataSource, UITableViewDelegate>
 
@@ -63,6 +64,8 @@
            }
         [self.refreshControl endRefreshing];
        }];
+    
+  
     [task resume];
 }
 
@@ -81,22 +84,33 @@
     NSString *baseURLString = @"https://image.tmdb.org/t/p/w500";
     NSString *posterURLString = movie[@"poster_path"];
     NSString *fullPosterURLString = [baseURLString stringByAppendingString:posterURLString];
-    
     NSURL *posterURL = [NSURL URLWithString:fullPosterURLString];
+    
     cell.posterView.image=nil;
     [cell.posterView setImageWithURL:posterURL];
     
     return cell;
 }
 
-/*
+
 #pragma mark - Navigation
 
 // In a storyboard-based application, you will often want to do a little preparation before navigation
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     // Get the new view controller using [segue destinationViewController].
     // Pass the selected object to the new view controller.
+    
+    UITableViewCell *tappedCell = sender;
+    NSIndexPath *indexPath = [self.tableView indexPathForCell:tappedCell];
+    NSDictionary *movie = self.movies[indexPath.row];
+    
+    DetailsViewController *detailViewController = [segue destinationViewController];
+    detailViewController.movie = movie;
+    
+    NSLog(@"Tapping a movie!");
+    
+    
 }
-*/
+
 
 @end
