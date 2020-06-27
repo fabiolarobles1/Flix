@@ -36,11 +36,13 @@
     
     [self.posterView setImageWithURL:posterURL];
     
-    NSString *backdropURLString = self.movie[@"backdrop_path"];
-    NSString *fullBackdropURLString = [baseURLString stringByAppendingString:backdropURLString];
-    NSURL *backdropURL = [NSURL URLWithString:fullBackdropURLString];
-    [self.backdropView setImageWithURL:backdropURL];
-    
+    //avoiding no backdrop error
+    if([self.movie[@"backdrop_path"] isKindOfClass:[NSString class]]){
+        NSString *backdropURLString = self.movie[@"backdrop_path"];
+        NSString *fullBackdropURLString = [baseURLString stringByAppendingString:backdropURLString];
+        NSURL *backdropURL = [NSURL URLWithString:fullBackdropURLString];
+        [self.backdropView setImageWithURL:backdropURL];
+    }
     self.titleLabel.text = self.movie[@"title"];
     self.synopsisLabel.text = self.movie[@"overview"];
     
