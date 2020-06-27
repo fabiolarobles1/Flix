@@ -4,6 +4,7 @@
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="collection view cell content view" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -77,27 +78,63 @@
             </objects>
             <point key="canvasLocation" x="38" y="504"/>
         </scene>
-        <!--View Controller-->
+        <!--Now Showing-->
         <scene sceneID="vaE-EY-VmV">
             <objects>
-                <viewController id="ssP-13-7fA" sceneMemberID="viewController">
+                <viewController id="ssP-13-7fA" customClass="MoviesGridViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="CFs-ux-qhd">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="dsT-nP-8U5">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="0.0" minimumInteritemSpacing="0.0" id="YGx-sd-bw9">
+                                    <size key="itemSize" width="135" height="200"/>
+                                    <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                                    <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                                    <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                </collectionViewFlowLayout>
+                                <cells>
+                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="MovieCollectionViewCell" id="yPY-9J-MPc" customClass="MovieCollectionViewCell">
+                                        <rect key="frame" x="0.0" y="0.0" width="135" height="193"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <collectionViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="w3A-NG-GBL" customClass="MovieCollectionViewCell">
+                                            <rect key="frame" x="0.0" y="0.0" width="135" height="193"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Jlf-Ju-cgT">
+                                                    <rect key="frame" x="0.0" y="0.0" width="135" height="200"/>
+                                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                                </imageView>
+                                            </subviews>
+                                        </collectionViewCellContentView>
+                                        <size key="customSize" width="135" height="193"/>
+                                        <connections>
+                                            <outlet property="posterView" destination="Jlf-Ju-cgT" id="I3y-Oq-xiO"/>
+                                        </connections>
+                                    </collectionViewCell>
+                                </cells>
+                            </collectionView>
+                        </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <viewLayoutGuide key="safeArea" id="tZa-Mc-K4n"/>
                     </view>
-                    <navigationItem key="navigationItem" id="77i-bR-ggE"/>
+                    <navigationItem key="navigationItem" title="Now Showing" id="77i-bR-ggE"/>
+                    <connections>
+                        <outlet property="collectionView" destination="dsT-nP-8U5" id="p9w-qQ-MAH"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="QDm-Re-Nvf" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1411" y="497"/>
+            <point key="canvasLocation" x="1410.4000000000001" y="496.10194902548727"/>
         </scene>
         <!--Movie Grid-->
         <scene sceneID="gGl-Z1-daG">
             <objects>
                 <navigationController id="JAB-5P-Xhs" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Movie Grid" id="dgg-jP-Fp6"/>
+                    <tabBarItem key="tabBarItem" title="Movie Grid" image="now_playing_tabbar_item" id="dgg-jP-Fp6"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="uYd-Z6-pfo">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -113,7 +150,6 @@
         <!--Details-->
         <scene sceneID="dJf-zZ-au9">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="UAY-5i-HYM" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
                 <viewController id="Vso-UR-YPg" customClass="DetailsViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="D8X-P6-ybx">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
@@ -162,6 +198,7 @@
                         <outlet property="titleLabel" destination="Vxj-Yk-VTB" id="01c-Ag-749"/>
                     </connections>
                 </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="UAY-5i-HYM" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="38" y="1333"/>
         </scene>
@@ -187,7 +224,7 @@
         <scene sceneID="ob8-9y-UsY">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="M4H-5k-7a3" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Now Playing" id="RM4-eh-gal"/>
+                    <tabBarItem key="tabBarItem" title="Now Playing" image="ticket_tabbar_icon" id="RM4-eh-gal"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="4RQ-oi-C8z">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
@@ -203,4 +240,8 @@
             <point key="canvasLocation" x="38" y="-338"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="now_playing_tabbar_item" width="21" height="21"/>
+        <image name="ticket_tabbar_icon" width="25" height="25"/>
+    </resources>
 </document>

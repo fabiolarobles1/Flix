@@ -40,11 +40,13 @@
 BOOL firstTime = YES;
 
 - (void) fetchMovies {
+    
     //start activity indicator when movies are loading
     if(firstTime){
-     [self.activityIndicator startAnimating];
+        [self.activityIndicator startAnimating];
         firstTime = NO;
     }
+    
     NSURL *url = [NSURL URLWithString:@"https://api.themoviedb.org/3/movie/now_playing?api_key=a07e22bc18f5cb106bfe4cc1f83ad8ed"];
     NSURLRequest *request = [NSURLRequest requestWithURL:url cachePolicy:NSURLRequestReloadIgnoringLocalCacheData timeoutInterval:10.0];
     NSURLSession *session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration] delegate:nil delegateQueue:[NSOperationQueue mainQueue]];
@@ -55,23 +57,13 @@ BOOL firstTime = YES;
                NSLog(@"%@", [error localizedDescription]);
                UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Cannot Load Movies" message:@"The internet connection appears to be offline." preferredStyle:(UIAlertControllerStyleAlert)];
                
-               //CANCEL ACTION FOR FUTURE IDEAS (MAYBE)
-               //creating cancel action
-               //UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"Cancel"  style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
-               //doing nothing will dismiss the view
-               //}];
-               //adding cancel action to the alertController
-               //[alert addAction:cancelAction];
-               
                //creating OK action
                UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"Try Again" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-                   //try to load movies again
                    [self fetchMovies];
                }];
                
                //adding OK action to the alertController
                [alert addAction:okAction];
-               
                [self presentViewController:alert animated:YES completion:^{
                 //space for what happens after the controller finishes presenting
                }];
@@ -79,14 +71,13 @@ BOOL firstTime = YES;
            }
            else {
                NSDictionary *dataDictionary = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
-               
                NSLog(@"%@", dataDictionary);
-               
                self.movies = dataDictionary[@"results"];
               
                for (NSDictionary *movie in self.movies) {
                    NSLog(@"%@", movie[@"title"]);
                }
+               
                [self.tableView reloadData];
                
                //Stops activity indicator
