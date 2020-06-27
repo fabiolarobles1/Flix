@@ -14,18 +14,18 @@
 @interface MoviesViewController () <UITableViewDataSource, UITableViewDelegate>
 
 @property (nonatomic, strong) NSArray *movies;
-
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
-
 @property (nonatomic,strong)  UIRefreshControl *refreshControl;
+@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
 
 @end
 
 @implementation MoviesViewController
 
 - (void)viewDidLoad {
-    [super viewDidLoad];
     
+    [super viewDidLoad];
+   
     self.tableView.dataSource = self;
     self.tableView.delegate = self;
     
@@ -34,14 +34,22 @@
     self.refreshControl = [[UIRefreshControl alloc] init];
     [self.refreshControl addTarget:self action:@selector(fetchMovies) forControlEvents:UIControlEventValueChanged];
     [self.tableView insertSubview:self.refreshControl atIndex:0];
- //   [self.tableView addSubview:self.refreshControl];
+
 }
 
+BOOL firstTime = YES;
+
 - (void) fetchMovies {
-    
+    //start activity indicator when movies are loading
+    if(firstTime){
+     [self.activityIndicator startAnimating];
+        firstTime = NO;
+    }
     NSURL *url = [NSURL URLWithString:@"https://api.themoviedb.org/3/movie/now_playing?api_key=a07e22bc18f5cb106bfe4cc1f83ad8ed"];
     NSURLRequest *request = [NSURLRequest requestWithURL:url cachePolicy:NSURLRequestReloadIgnoringLocalCacheData timeoutInterval:10.0];
     NSURLSession *session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration] delegate:nil delegateQueue:[NSOperationQueue mainQueue]];
+    [self.refreshControl endRefreshing];
+    
     NSURLSessionDataTask *task = [session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
            if (error != nil) {
                NSLog(@"%@", [error localizedDescription]);
@@ -52,20 +60,19 @@
                NSLog(@"%@", dataDictionary);
                
                self.movies = dataDictionary[@"results"];
-               
+              
                for (NSDictionary *movie in self.movies) {
                    NSLog(@"%@", movie[@"title"]);
                }
 
                [self.tableView reloadData];
-               // TODO: Get the array of movies
-               // TODO: Store the movies in a property to use elsewhere
-               // TODO: Reload your table view data
+               
+               //Stops activity indicator
+               [self.activityIndicator stopAnimating];
            }
-        [self.refreshControl endRefreshing];
+        
        }];
     
-  
     [task resume];
 }
 
@@ -90,6 +97,11 @@
     [cell.posterView setImageWithURL:posterURL];
     
     return cell;
+}
+
+-(void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(nonnull NSIndexPath *)indexPath{
+    //Unselect movie cell after entering details
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
 
