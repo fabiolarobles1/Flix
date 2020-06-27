@@ -53,6 +53,29 @@ BOOL firstTime = YES;
     NSURLSessionDataTask *task = [session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
            if (error != nil) {
                NSLog(@"%@", [error localizedDescription]);
+               UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Cannot Load Movies" message:@"The internet connection appears to be offline." preferredStyle:(UIAlertControllerStyleAlert)];
+               
+               //CANCEL ACTION FOR FUTURE IDEAS (MAYBE)
+               //creating cancel action
+               //UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"Cancel"  style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+               //doing nothing will dismiss the view
+               //}];
+               //adding cancel action to the alertController
+               //[alert addAction:cancelAction];
+               
+               //creating OK action
+               UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"Try Again" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                   //try to load movies again
+                   [self fetchMovies];
+               }];
+               
+               //adding OK action to the alertController
+               [alert addAction:okAction];
+               
+               [self presentViewController:alert animated:YES completion:^{
+                //space for what happens after the controller finishes presenting
+               }];
+               
            }
            else {
                NSDictionary *dataDictionary = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
@@ -64,12 +87,12 @@ BOOL firstTime = YES;
                for (NSDictionary *movie in self.movies) {
                    NSLog(@"%@", movie[@"title"]);
                }
-
                [self.tableView reloadData];
                
                //Stops activity indicator
                [self.activityIndicator stopAnimating];
            }
+        
         
        }];
     

@@ -23,7 +23,6 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view.
     
     NSString *baseURLString = @"https://image.tmdb.org/t/p/w500";
     NSString *posterURLString = self.movie[@"poster_path"];
@@ -31,9 +30,7 @@
     NSURL *posterURL = [NSURL URLWithString:fullPosterURLString];
     
     self.posterView.layer.borderWidth = 2.0f;
-    
     self.posterView.layer.borderColor = [[UIColor whiteColor] CGColor];
-    
     [self.posterView setImageWithURL:posterURL];
     
     //avoiding no backdrop error
@@ -43,6 +40,7 @@
         NSURL *backdropURL = [NSURL URLWithString:fullBackdropURLString];
         [self.backdropView setImageWithURL:backdropURL];
     }
+    
     self.titleLabel.text = self.movie[@"title"];
     self.synopsisLabel.text = self.movie[@"overview"];
     
