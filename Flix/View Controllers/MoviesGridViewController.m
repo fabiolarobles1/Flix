@@ -10,9 +10,11 @@
 #import "MovieCollectionViewCell.h"
 #import "UIImageView+AFNetworking.h"
 
-@interface MoviesGridViewController () <UICollectionViewDataSource, UICollectionViewDelegate>
+@interface MoviesGridViewController () <UICollectionViewDataSource, UICollectionViewDelegate,UICollectionViewDelegateFlowLayout>
 @property (nonatomic, strong) NSArray *movies;
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
+@property (weak, nonatomic) UICollectionViewFlowLayout *flowLayout;
+
 
 @end
 
@@ -23,22 +25,28 @@
     
     self.collectionView.dataSource = self;
     self.collectionView.delegate = self;
-    
     [self fetchMovies];
     
-    UICollectionViewFlowLayout *layout = (UICollectionViewFlowLayout *) self.collectionView.collectionViewLayout;
-    
-    layout.minimumLineSpacing = 2;
-    layout.minimumInteritemSpacing = 2;
- 
-    CGFloat posterPerLine = 3;
-    
-    CGFloat itemWidth = (self.collectionView.frame.size.width - layout.minimumInteritemSpacing * (posterPerLine -1)) /posterPerLine;
-    
-    CGFloat itemHeigth = itemWidth * 1.5;
-    
-    layout.itemSize = CGSizeMake(itemWidth-5, itemHeigth);
 }
+
+- (void)viewDidLayoutSubviews {
+   [super viewDidLayoutSubviews];
+
+    self.flowLayout.scrollDirection = UICollectionViewScrollDirectionVertical;
+    self.flowLayout.minimumLineSpacing = 0;
+    self.flowLayout.minimumInteritemSpacing = 0;
+    self.flowLayout.sectionInset = UIEdgeInsetsMake(10, 10, 10, 10);
+}
+
+
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath{
+    int totalwidth = self.collectionView.bounds.size.width;
+    int numberOfCellsPerRow = 2;
+    int dimensions = (CGFloat)(totalwidth / numberOfCellsPerRow);
+
+    return CGSizeMake(dimensions, dimensions*1.5);
+}
+
 
 - (void) fetchMovies {
    
@@ -74,7 +82,6 @@
                [self.collectionView reloadData];
               
            }
-        
         
        }];
     
