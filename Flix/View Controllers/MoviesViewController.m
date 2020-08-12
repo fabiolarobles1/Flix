@@ -84,7 +84,7 @@ BOOL firstTime = YES;
                [self.activityIndicator stopAnimating];
            }
         
-        
+        [self.tableView reloadData];
        }];
     
     [task resume];

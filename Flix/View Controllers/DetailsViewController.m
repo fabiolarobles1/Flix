@@ -10,12 +10,13 @@
 #import "UIImageView+AFNetworking.h"
 #import <QuartzCore/QuartzCore.h>
 
-@interface DetailsViewController ()
+@interface DetailsViewController ()<UIScrollViewDelegate>
 
 @property (weak, nonatomic) IBOutlet UIImageView *backdropView;
 @property (weak, nonatomic) IBOutlet UIImageView *posterView;
 @property (weak, nonatomic) IBOutlet UILabel *titleLabel;
 @property (weak, nonatomic) IBOutlet UILabel *synopsisLabel;
+@property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
 
 @end
 
@@ -23,7 +24,6 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
     NSString *baseURLString = @"https://image.tmdb.org/t/p/w500";
     NSString *posterURLString = self.movie[@"poster_path"];
     NSString *fullPosterURLString = [baseURLString stringByAppendingString:posterURLString];
@@ -48,6 +48,12 @@
  
     [self.synopsisLabel sizeToFit];
    
+    self.scrollView.delegate = self;
+    self.scrollView.directionalLockEnabled = YES;
+}
+
+-(void)scrollViewDidScroll:(UIScrollView *)scrollView{
+    [self.scrollView setContentOffset: CGPointMake(0, self.scrollView.contentOffset.y)];
 }
 
 /*

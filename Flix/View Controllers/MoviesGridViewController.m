@@ -30,14 +30,14 @@
     
     layout.minimumLineSpacing = 2;
     layout.minimumInteritemSpacing = 2;
-    
+ 
     CGFloat posterPerLine = 3;
     
-    CGFloat itemWidth = (self.collectionView.frame.size.width - layout.minimumInteritemSpacing * (posterPerLine-1))/ posterPerLine;
+    CGFloat itemWidth = (self.collectionView.frame.size.width - layout.minimumInteritemSpacing * (posterPerLine -1)) /posterPerLine;
     
     CGFloat itemHeigth = itemWidth * 1.5;
     
-    layout.itemSize = CGSizeMake(itemWidth, itemHeigth);
+    layout.itemSize = CGSizeMake(itemWidth-5, itemHeigth);
 }
 
 - (void) fetchMovies {
